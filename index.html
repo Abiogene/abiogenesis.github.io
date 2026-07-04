@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="安全服务工程师 - 个人作品集 | 授权测试 · 渗透测试 · 漏洞分析 · 报告交付" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>MeiYuan — 安全服务工程师</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+/* ============================================
+   设计系统 · Apple 风格 · 极简 · 科技感
+   ============================================ */
+
+:root {
+  /* 色彩 — 苹果官网色板 */
+  --white: #ffffff;
+  --bg: #ffffff;
+  --bg-alt: #f5f5f7;
+  --ink: #1d1d1f;
+  --ink-soft: #2e2e31;
+  --muted: #6e6e73;
+  --muted-light: #aeaeb2;
+  --border: rgba(0, 0, 0, 0.06);
+  --border-card: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.12);
+  --accent: #0066cc;
+  --accent-hover: #0077ed;
+  --accent-soft: rgba(0, 102, 204, 0.06);
+  --accent-glow: rgba(0, 102, 204, 0.12);
+  --card-bg: #ffffff;
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+  --card-shadow-hover: 0 1px 3px rgba(0, 0, 0, 0.06), 0 12px 40px rgba(0, 0, 0, 0.08);
+  --radius-sm: 12px;
+  --radius: 18px;
+  --radius-lg: 24px;
+  --radius-full: 980px;
+  --transition-fast: 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+  --transition-smooth: 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+  --font-stack: "Inter", "SF Pro Display", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+}
+
+/* Reset & 基础 */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+body{font-family:var(--font-stack);font-weight:400;color:var(--ink);background:var(--bg);line-height:1.6;overflow-x:hidden;font-feature-settings:"cv11","ss01"}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+ul{list-style:none}
+
+/* 导航栏 · 毛玻璃 */
+.nav-bar{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.7);backdrop-filter:saturate(180%) blur(24px);-webkit-backdrop-filter:saturate(180%) blur(24px);border-bottom:0.5px solid var(--border)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 40px;min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:32px}
+.nav-logo{display:flex;align-items:center;gap:10px;font-weight:650;font-size:1rem;color:var(--ink);letter-spacing:-0.01em;opacity:0.92}
+.nav-logo-mark{width:30px;height:30px;border-radius:7px;display:grid;place-items:center;background:var(--ink);color:var(--white);font-size:0.8rem;font-weight:800;flex:none}
+.nav-links{display:flex;gap:4px}
+.nav-link{padding:7px 16px;border-radius:var(--radius-full);font-size:0.82rem;font-weight:500;color:var(--muted);transition:color 0.2s ease,background 0.2s ease}
+.nav-link:hover{color:var(--ink);background:rgba(0,0,0,0.04)}
+
+/* Hero */
+.hero{position:relative;min-height:calc(100vh - 52px);display:flex;align-items:center;justify-content:center;padding:100px 40px 120px;overflow:hidden;background:var(--bg)}
+.hero-bg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 50% at 35% 15%,rgba(0,102,204,0.04),transparent 55%),radial-gradient(ellipse 50% 40% at 75% 65%,rgba(0,102,204,0.02),transparent 55%),radial-gradient(ellipse 55% 45% at 25% 80%,rgba(110,110,115,0.02),transparent 55%)}
+.hero-content{position:relative;z-index:1;max-width:800px;width:100%;text-align:center}
+.hero-eyebrow{font-size:0.78rem;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:var(--accent);margin-bottom:28px}
+.hero-title{font-size:clamp(3rem,5.8vw,5rem);font-weight:700;line-height:1.05;letter-spacing:-0.035em;color:var(--ink);margin-bottom:32px}
+.hero-subtitle{font-size:clamp(1.05rem,1.5vw,1.28rem);font-weight:400;line-height:1.75;color:var(--muted);max-width:560px;margin:0 auto 40px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:64px}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;max-width:500px;margin:0 auto}
+.hero-stat{text-align:center}
+.hero-stat-value{display:block;font-size:2.5rem;font-weight:700;color:var(--ink);letter-spacing:-0.03em;line-height:1}
+.hero-stat-label{display:block;margin-top:10px;font-size:0.85rem;font-weight:500;color:var(--muted)}
+
+/* 按钮 */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 28px;border-radius:var(--radius-full);font-size:0.92rem;font-weight:600;letter-spacing:-0.01em;cursor:pointer;transition:all var(--transition-fast);border:none;font-family:inherit}
+.btn-primary{background:var(--accent);color:var(--white);box-shadow:0 2px 8px rgba(0,102,204,0.25)}
+.btn-primary:hover{background:var(--accent-hover);transform:scale(1.02);box-shadow:0 4px 18px rgba(0,102,204,0.35)}
+.btn-outline{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn-outline:hover{background:var(--accent-soft);transform:scale(1.02)}
+
+/* Section 通用 */
+.section{padding:140px 40px}
+.section--light{background:var(--bg-alt)}
+.section--accent{background:var(--ink);color:var(--white)}
+.section--accent .section-eyebrow{color:rgba(255,255,255,0.45)}
+.section--accent .section-title{color:var(--white)}
+.section--accent .section-desc{color:rgba(255,255,255,0.5)}
+.section-inner{max-width:1040px;margin:0 auto;width:100%}
+.section-eyebrow{font-size:0.78rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+.section-title{font-size:clamp(2.2rem,4vw,3.4rem);font-weight:700;line-height:1.1;letter-spacing:-0.035em;color:var(--ink);margin-bottom:24px}
+.section-desc{font-size:1.06rem;font-weight:400;line-height:1.7;color:var(--muted);max-width:560px;margin-bottom:56px}
+
+/* About */
+.about-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:56px;align-items:start}
+.about-lead{font-size:1rem;font-weight:400;line-height:1.9;color:var(--ink-soft);margin-bottom:20px}
+.about-lead:last-child{margin-bottom:0}
+.about-highlights{display:grid;gap:14px}
+.highlight-item{display:flex;gap:16px;align-items:flex-start;padding:22px 24px;background:var(--card-bg);border:1px solid var(--border-card);border-radius:var(--radius);transition:box-shadow var(--transition-smooth),transform var(--transition-fast)}
+.highlight-item:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-1px)}
+.highlight-icon{font-size:1.35rem;flex:none;width:42px;height:42px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent-soft),rgba(0,102,204,0.02));border-radius:var(--radius-sm)}
+.highlight-item strong{display:block;font-size:0.95rem;font-weight:650;color:var(--ink);margin-bottom:5px;letter-spacing:-0.01em}
+.highlight-item p{font-size:0.87rem;font-weight:400;color:var(--muted);line-height:1.6}
+
+/* Timeline · 时间轴 */
+.timeline{display:grid;gap:0;position:relative}
+.timeline-item{display:grid;grid-template-columns:28px 1fr;gap:32px;padding-bottom:52px}
+.timeline-item:last-child{padding-bottom:0}
+.timeline-item:last-child .timeline-line{display:none}
+.timeline-marker{display:flex;flex-direction:column;align-items:center}
+.timeline-dot{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--accent-glow);flex:none;margin-top:7px}
+.timeline-line{width:1px;flex:1;background:linear-gradient(180deg,var(--border-card),transparent 80%);margin-top:14px;min-height:40px}
+.timeline-body{background:var(--card-bg);border:1px solid var(--border-card);border-radius:var(--radius-lg);padding:34px 36px;transition:box-shadow var(--transition-smooth),transform var(--transition-fast)}
+.timeline-body:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-2px)}
+.timeline-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:22px}
+.timeline-head h3{font-size:1.22rem;font-weight:700;color:var(--ink);letter-spacing:-0.015em}
+.timeline-role{font-size:0.9rem;font-weight:500;color:var(--accent);margin-top:5px}
+.timeline-date{font-size:0.84rem;font-weight:550;color:var(--muted);white-space:nowrap;padding:5px 14px;background:var(--accent-soft);border-radius:var(--radius-full)}
+.timeline-details{display:grid;gap:11px}
+.timeline-details li{position:relative;padding-left:20px;font-size:0.93rem;font-weight:400;line-height:1.75;color:var(--ink-soft)}
+.timeline-details li::before{content:"";position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--muted-light)}
+.timeline-details li strong{color:var(--ink);font-weight:600}
+.timeline-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+
+/* Tags */
+.tag{display:inline-flex;align-items:center;padding:5px 13px;border-radius:var(--radius-full);background:rgba(0,102,204,0.05);color:var(--accent);font-size:0.78rem;font-weight:550;white-space:nowrap;letter-spacing:-0.005em}
+.tag--sm{padding:4px 10px;font-size:0.73rem}
+
+/* 项目卡片 */
+.project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:24px}
+.project-card{background:var(--card-bg);border:1px solid var(--border-card);border-radius:var(--radius-lg);overflow:hidden;transition:box-shadow var(--transition-smooth),transform var(--transition-fast);display:flex;flex-direction:column}
+.project-card:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-3px)}
+.project-card-img{height:100px;display:flex;align-items:flex-start;justify-content:flex-end;padding:14px;position:relative}
+.project-card-badge{padding:4px 10px;border-radius:var(--radius-full);background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:rgba(255,255,255,0.88);font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase}
+.project-card-body{padding:26px 28px 28px;display:flex;flex-direction:column;gap:13px;flex:1}
+.project-card-body h3{font-size:1.1rem;font-weight:700;color:var(--ink);letter-spacing:-0.015em}
+.project-card-body>p{font-size:0.88rem;font-weight:400;color:var(--muted);line-height:1.7}
+.project-card-list{display:grid;gap:7px;font-size:0.84rem;font-weight:400;color:var(--ink-soft);line-height:1.6;padding:0}
+.project-card-list li{position:relative;padding-left:18px}
+.project-card-list li::before{content:"→";position:absolute;left:0;top:0;color:var(--accent);font-size:0.7rem;font-weight:600;line-height:inherit}
+.project-card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:18px}
+
+/* Skills */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+.skill-card{padding:30px 30px 28px;background:var(--card-bg);border:1px solid var(--border-card);border-radius:var(--radius);transition:box-shadow var(--transition-smooth),transform var(--transition-fast)}
+.skill-card:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-2px)}
+.skill-icon{width:46px;height:46px;display:grid;place-items:center;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--accent-soft),rgba(0,102,204,0.02));color:var(--accent);margin-bottom:18px}
+.skill-card h3{font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:16px;letter-spacing:-0.015em}
+.skill-bar{height:4px;background:#e8e8ed;border-radius:var(--radius-full);margin-bottom:16px;overflow:hidden}
+.skill-bar-fill{height:100%;border-radius:var(--radius-full);background:var(--accent);transition:width 1.4s cubic-bezier(0.16,1,0.3,1)}
+.skill-card p{font-size:0.84rem;font-weight:400;color:var(--muted);line-height:1.65}
+
+/* AI 技能高亮 */
+.skill-card--highlight{position:relative;border-color:rgba(0,102,204,0.18);background:linear-gradient(135deg,rgba(0,102,204,0.03),rgba(255,255,255,0.98))}
+.skill-card--highlight::before{content:"";position:absolute;inset:-1px;border-radius:var(--radius);padding:1px;background:linear-gradient(135deg,var(--accent),rgba(0,102,204,0.2),transparent 60%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.skill-card--highlight .skill-icon{background:linear-gradient(135deg,rgba(0,102,204,0.12),rgba(0,102,204,0.03))}
+.skill-card--highlight h3{background:linear-gradient(135deg,var(--accent),#4a90d9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* Contact */
+.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:860px}
+.contact-card{display:flex;flex-direction:column;gap:0;padding:36px 32px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:var(--radius-lg);transition:background var(--transition-smooth),transform var(--transition-fast),border-color var(--transition-smooth),box-shadow var(--transition-smooth);cursor:pointer;text-decoration:none;color:inherit}
+a.contact-card:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.14);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.3)}
+.contact-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px}
+.contact-icon{width:52px;height:52px;display:grid;place-items:center;border-radius:var(--radius-sm);background:rgba(255,255,255,0.07);color:#5ea3f0}
+.contact-arrow{opacity:0;transform:translate(4px,-4px);transition:opacity var(--transition-smooth),transform var(--transition-smooth);color:rgba(255,255,255,0.5)}
+a.contact-card:hover .contact-arrow{opacity:1;transform:translate(0,0)}
+.contact-card-body{display:flex;flex-direction:column;gap:8px}
+.contact-label{font-size:0.72rem;font-weight:550;text-transform:uppercase;letter-spacing:0.14em;color:rgba(255,255,255,0.35)}
+.contact-value{font-size:1.1rem;font-weight:650;color:rgba(255,255,255,0.9);letter-spacing:-0.01em}
+.contact-hint{font-size:0.82rem;font-weight:400;color:rgba(255,255,255,0.3);margin-top:2px}
+
+/* 滚动动画 · Fade Up */
+.fade-up{opacity:0;transform:translateY(32px);transition:opacity 0.75s cubic-bezier(0.16,1,0.3,1),transform 0.75s cubic-bezier(0.16,1,0.3,1)}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+
+/* 交错延迟 */
+.project-card:nth-child(1){transition-delay:0.00s}
+.project-card:nth-child(2){transition-delay:0.05s}
+.project-card:nth-child(3){transition-delay:0.10s}
+.project-card:nth-child(4){transition-delay:0.15s}
+.project-card:nth-child(5){transition-delay:0.19s}
+.project-card:nth-child(6){transition-delay:0.23s}
+.project-card:nth-child(7){transition-delay:0.27s}
+.skill-card:nth-child(1){transition-delay:0.00s}
+.skill-card:nth-child(2){transition-delay:0.04s}
+.skill-card:nth-child(3){transition-delay:0.08s}
+.skill-card:nth-child(4){transition-delay:0.12s}
+.skill-card:nth-child(5){transition-delay:0.16s}
+.skill-card:nth-child(6){transition-delay:0.20s}
+.skill-card:nth-child(7){transition-delay:0.23s}
+.skill-card:nth-child(8){transition-delay:0.26s}
+.contact-card:nth-child(1){transition-delay:0.00s}
+.contact-card:nth-child(2){transition-delay:0.06s}
+.contact-card:nth-child(3){transition-delay:0.12s}
+
+/* 响应式 · 平板 */
+@media (max-width:900px){
+  .nav-inner{padding:0 24px}
+  .nav-links{gap:0}
+  .nav-link{padding:7px 12px;font-size:0.8rem}
+  .section{padding:100px 24px}
+  .hero{padding:80px 24px 100px;min-height:auto}
+  .hero-title{font-size:clamp(2.4rem,7vw,3.4rem)}
+  .hero-stats{gap:24px}
+  .hero-stat-value{font-size:2rem}
+  .about-grid{grid-template-columns:1fr;gap:36px}
+  .project-grid{grid-template-columns:1fr;max-width:520px;margin:0 auto}
+  .skills-grid{grid-template-columns:1fr;max-width:520px;margin:0 auto}
+  .contact-grid{grid-template-columns:repeat(3,1fr);max-width:100%;gap:16px}
+  .contact-card{padding:28px 24px}
+  .timeline-item{grid-template-columns:24px 1fr;gap:24px}
+  .timeline-body{padding:28px 24px}
+}
+
+/* 响应式 · 移动端 */
+@media (max-width:560px){
+  .nav-logo-text{display:none}
+  .nav-inner{padding:0 16px}
+  .nav-link{padding:6px 10px;font-size:0.76rem;border-radius:8px}
+  .section{padding:80px 18px}
+  .hero{padding:56px 18px 80px}
+  .hero-eyebrow{font-size:0.72rem;letter-spacing:0.18em;margin-bottom:20px}
+  .hero-title{font-size:2.4rem;margin-bottom:22px}
+  .hero-subtitle{font-size:0.95rem}
+  .hero-stats{gap:14px}
+  .hero-stat-value{font-size:1.65rem}
+  .hero-stat-label{font-size:0.75rem}
+  .hero-actions{flex-direction:column;align-items:stretch;margin-bottom:48px}
+  .btn{width:100%}
+  .section-title{font-size:1.8rem}
+  .section-eyebrow{font-size:0.72rem;letter-spacing:0.16em}
+  .contact-grid{grid-template-columns:1fr;max-width:100%}
+  .timeline-item{grid-template-columns:20px 1fr;gap:18px;padding-bottom:36px}
+  .timeline-head{flex-direction:column;gap:10px}
+  .timeline-date{align-self:flex-start}
+  .timeline-body{padding:22px 20px;border-radius:var(--radius)}
+}
+
+/* 无障碍 · 减少动效 */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .fade-up{opacity:1;transform:none;transition:none}
+  .btn,.nav-link,.skill-card,.project-card,.contact-card,.timeline-body,.highlight-item{transition:none}
+}
+  </style>
+</head>
+<body>
+  <!-- 顶部导航 -->
+  <header class="nav-bar" id="top">
+    <div class="nav-inner">
+      <a class="nav-logo" href="#hero" aria-label="回到顶部">
+        <span class="nav-logo-mark">M</span>
+        <span class="nav-logo-text">MeiYuan</span>
+      </a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="#about" class="nav-link">关于</a>
+        <a href="#internship" class="nav-link">实习</a>
+        <a href="#projects" class="nav-link">项目</a>
+        <a href="#skills" class="nav-link">技能</a>
+        <a href="#contact" class="nav-link">联系</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== Hero 区 ===== -->
+    <section class="hero" id="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-content">
+        <p class="hero-eyebrow fade-up">安全服务工程师</p>
+        <h1 class="hero-title fade-up" style="transition-delay: 0.08s;">
+          以精准与严谨<br />守护数字安全
+        </h1>
+        <p class="hero-subtitle fade-up" style="transition-delay: 0.16s;">
+          专注于授权渗透测试、漏洞分析与安全报告交付<br />用可验证的证据与可落地的建议，筑起安全防线
+        </p>
+        <div class="hero-actions fade-up" style="transition-delay: 0.24s;">
+          <a href="#internship" class="btn btn-primary">查看经历</a>
+          <a href="#contact" class="btn btn-outline">取得联系</a>
+        </div>
+        <div class="hero-stats fade-up" style="transition-delay: 0.32s;">
+          <div class="hero-stat">
+            <span class="hero-stat-value">2</span>
+            <span class="hero-stat-label">段实习经历</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">7+</span>
+            <span class="hero-stat-label">靶场实战项目</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">20+</span>
+            <span class="hero-stat-label">漏洞类型覆盖</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 关于我 ===== -->
+    <section class="section section--light" id="about">
+      <div class="section-inner">
+        <p class="section-eyebrow fade-up">About</p>
+        <h2 class="section-title fade-up">关于我</h2>
+        <div class="about-grid fade-up">
+          <div class="about-intro">
+            <p class="about-lead">
+              山东建筑大学计算机科学与技术专业在读本科生，2026年7月毕业。主修计算机网络、高级计算机网络、网络安全技术、路由交换技术、云计算技术与应用、操作系统、网络编程技术、Kali-Linux、白帽子讲Web安全及数据库概论。
+            </p>
+            <p class="about-lead">
+              具备安全服务实习经验，熟悉PTES渗透测试流程、等级保护定级备案、授权漏洞扫描、人工复核及报告编写。关注授权边界、验证证据链与可落地的整改建议。
+            </p>
+            <p class="about-lead">
+              熟练掌握 AI 工程化应用，精通 Prompt Engineering 技巧，善于通过结构化指令（角色扮演 + 场景约束 + 链式思维）驱动 AI Agent 高效完成安全分析与辅助决策。熟悉 MCP 协议及 AI 工具链编排，能够构建定制化的智能安全工作流。
+            </p>
+          </div>
+          <div class="about-highlights">
+            <div class="highlight-item">
+              <span class="highlight-icon">🔍</span>
+              <div>
+                <strong>检测与验证</strong>
+                <p>授权扫描 · 手动复核 · 误报排查 · 漏洞复现</p>
+              </div>
+            </div>
+            <div class="highlight-item">
+              <span class="highlight-icon">📋</span>
+              <div>
+                <strong>交付与报告</strong>
+                <p>漏洞报告 · 整改建议 · 复测关注点 · 证据留存</p>
+              </div>
+            </div>
+            <div class="highlight-item">
+              <span class="highlight-icon">🤖</span>
+              <div>
+                <strong>AI 工程化</strong>
+                <p>Prompt Engineering · Agent 编排 · MCP 协议 · CoT 推理</p>
+              </div>
+            </div>
+            <div class="highlight-item">
+              <span class="highlight-icon">🛠</span>
+              <div>
+                <strong>工程与协作</strong>
+                <p>Linux排障 · Shell脚本 · 项目沟通 · 客户支持</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 实习经历 ===== -->
+    <section class="section" id="internship">
+      <div class="section-inner">
+        <p class="section-eyebrow fade-up">Experience</p>
+        <h2 class="section-title fade-up">实习经历</h2>
+        <div class="timeline">
+          <!-- 实习 1 -->
+          <article class="timeline-item fade-up">
+            <div class="timeline-marker" aria-hidden="true">
+              <div class="timeline-dot"></div>
+              <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-body">
+              <div class="timeline-head">
+                <div>
+                  <h3>上海创旗天下技术有限公司</h3>
+                  <p class="timeline-role">安全服务实习生</p>
+                </div>
+                <span class="timeline-date">2025.10 — 2026.01</span>
+              </div>
+              <ul class="timeline-details">
+                <li>参与网络安全<strong>等级保护定级备案</strong>项目实施，协助梳理测评对象范围、业务系统边界、网络资产情况和漏洞扫描/渗透测试授权信息。</li>
+                <li>使用 <strong>AWVS、Nessus</strong> 等工具对授权业务系统开展漏洞扫描，结合 <strong>Nmap</strong> 端口探测、服务识别和版本信息分析，排查网络、主机及应用层安全风险。</li>
+                <li>根据业务系统承载能力与访问时段，调整扫描<strong>并发数、请求速率和扫描窗口</strong>，降低对业务系统的影响。</li>
+                <li>对自动化扫描结果进行<strong>人工复核</strong>，结合 Burp Suite、浏览器访问、请求包分析和漏洞复现步骤，对疑似漏洞进行手动验证。</li>
+                <li>参与漏洞扫描报告和渗透测试报告编写，整理漏洞等级、技术描述、影响范围、验证过程、整改建议和复测关注点。</li>
+              </ul>
+              <div class="timeline-tags">
+                <span class="tag">等级保护</span>
+                <span class="tag">AWVS</span>
+                <span class="tag">Nessus</span>
+                <span class="tag">Burp Suite</span>
+                <span class="tag">报告编写</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 实习 2 -->
+          <article class="timeline-item fade-up">
+            <div class="timeline-marker" aria-hidden="true">
+              <div class="timeline-dot"></div>
+              <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-body">
+              <div class="timeline-head">
+                <div>
+                  <h3>厦门用友烟草软件有限责任公司</h3>
+                  <p class="timeline-role">软件实施实习生</p>
+                </div>
+                <span class="timeline-date">2025.07 — 2025.09</span>
+              </div>
+              <ul class="timeline-details">
+                <li>参与"行业统一财务管理系统"实施项目，负责<strong>200余条</strong>客户主数据的校验、清洗、系统录入与异常反馈，配合完成客户侧基础数据整理与上线前准备工作。</li>
+                <li>针对字段缺失、格式不一致、重复记录和历史数据冲突等问题与客户确认，<strong>逐项修正后再回填</strong>系统，减少后续返工。</li>
+                <li>使用公司内部实施管理平台跟进客户问题单，协助整理问题描述、影响范围、处理进度和反馈结果，推动<strong>客户问题闭环</strong>。</li>
+                <li>配合实施人员完成信息更新、回填校验和临时支持工作，在较紧工期下维持项目推进节奏。</li>
+              </ul>
+              <div class="timeline-tags">
+                <span class="tag">数据治理</span>
+                <span class="tag">客户沟通</span>
+                <span class="tag">项目管理</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 项目展示 ===== -->
+    <section class="section section--light" id="projects">
+      <div class="section-inner">
+        <p class="section-eyebrow fade-up">Projects</p>
+        <h2 class="section-title fade-up">项目经历</h2>
+        <p class="section-desc fade-up">
+          基于 VulnHub / DVWA 等平台的实战靶场渗透测试，覆盖信息收集到权限提升的完整攻击链
+        </p>
+        <div class="project-grid">
+          <!-- 项目 1: W1R3S -->
+          <article class="project-card fade-up">
+            <div class="project-card-img" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);">
+              <span class="project-card-badge">VulnHub</span>
+            </div>
+            <div class="project-card-body">
+              <h3>W1R3S 靶机渗透</h3>
+              <p>完成主机发现、全端口扫描、服务探测与目录枚举。复现 FTP 匿名访问、LFI 文件包含、SSH 私钥破解及 sudo 提权等完整攻击链路。</p>
+              <ul class="project-card-list">
+                <li>FTP 匿名登录 → 信息泄露 → 口令破解</li>
+                <li>LFI 本地文件包含 → 敏感文件读取</li>
+                <li>SSH 私钥泄露 → John 破解 → sudo 提权</li>
+              </ul>
+              <div class="project-card-tags">
+                <span class="tag tag--sm">Nmap</span>
+                <span class="tag tag--sm">John</span>
+                <span class="tag tag--sm">SSH</span>
+                <span class="tag tag--sm">LFI</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 项目 2: Prime -->
+          <article class="project-card fade-up">
+            <div class="project-card-img" style="background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 50%, #3a3a3a 100%);">
+              <span class="project-card-badge">VulnHub</span>
+            </div>
+            <div class="project-card-body">
+              <h3>Prime 靶机渗透</h3>
+              <p>通过 Wfuzz 参数模糊测试发现 LFI 漏洞，结合 WordPress 后台主题文件写入获取 Shell，最终利用内核漏洞完成提权。</p>
+              <ul class="project-card-list">
+                <li>Wfuzz 参数模糊测试 → 发现 file 参数</li>
+                <li>WordPress 后台主题文件写入 → 反弹 Shell</li>
+                <li>内核漏洞利用 → 权限提升至 root</li>
+              </ul>
+              <div class="project-card-tags">
+                <span class="tag tag--sm">Wfuzz</span>
+                <span class="tag tag--sm">WordPress</span>
+                <span class="tag tag--sm">LFI</span>
+                <span class="tag tag--sm">提权</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 项目 3: Hackademic RTB1 -->
+          <article class="project-card fade-up">
+            <div class="project-card-img" style="background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #21262d 100%);">
+              <span class="project-card-badge">VulnHub</span>
+            </div>
+            <div class="project-card-body">
+              <h3>Hackademic RTB1 靶机渗透</h3>
+              <p>发现 SQL 注入点后，使用 sqlmap 自动化提取 WordPress 用户凭证，MD5 解密后登录后台完成渗透测试全流程。</p>
+              <ul class="project-card-list">
+                <li>SQL 注入发现 → sqlmap 自动化利用</li>
+                <li>WordPress 用户表 dump → MD5 哈希破解</li>
+                <li>高权限用户登录 → 后台渗透 → 信息收集</li>
+              </ul>
+              <div class="project-card-tags">
+                <span class="tag tag--sm">sqlmap</span>
+                <span class="tag tag--sm">SQL注入</span>
+                <span class="tag tag--sm">hashcat</span>
+                <span class="tag tag--sm">WordPress</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 项目 4: Jarbas -->
+          <article class="project-card fade-up">
+            <div class="project-card-img" style="background: linear-gradient(135deg, #1a1a1a 0%, #252525 50%, #333333 100%);">
+              <span class="project-card-badge">VulnHub</span>
+            </div>
+            <div class="project-card-body">
+              <h3>Jarbas 靶机渗透</h3>
+              <p>通过目录爆破发现 MD5 哈希泄露页面，解密后登录后台。利用计划任务脚本以 root 权限执行自定义命令实现提权。</p>
+              <ul class="project-card-list">
+                <li>gobuster 目录爆破 → 敏感页面发现</li>
+                <li>MD5 哈希泄露 → 在线破解 → 后台登录</li>
+                <li>Cron 计划任务劫持 → root 反弹 Shell</li>
+              </ul>
+              <div class="project-card-tags">
+                <span class="tag tag--sm">gobuster</span>
+                <span class="tag tag--sm">MD5破解</span>
+                <span class="tag tag--sm">Cron提权</span>
+                <span class="tag tag--sm">反弹Shell</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 项目 5: Nyx -->
+          <article class="project-card fade-up">
+            <div class="project-card-img" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #222222 100%);">
+              <span class="project-card-badge">VulnHub</span>
+            </div>
+            <div class="project-card-body">
+              <h3>Nyx 靶机渗透</h3>
+              <p>通过信息泄露获取 SSH 私钥（id_rsa）后登录目标系统，利用 GCC 的 sudo 权限进行权限提升，获取 root 控制权。</p>
+              <ul class="project-card-list">
+                <li>目录枚举 → 发现 id_rsa 私钥文件</li>
+                <li>SSH 密钥认证 → 用户级别 Shell</li>
+                <li>sudo -l 枚举 → GCC 提权 (GTFOBins)</li>
+              </ul>
+              <div class="project-card-tags">
+                <span class="tag tag--sm">SSH私钥</span>
+                <span class="tag tag--sm">GCC提权</span>
+                <span class="tag tag--sm">GTFOBins</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 项目 6: DVWA -->
+          <article class="project-card fade-up">
+            <div class="project-card-img" style="background: linear-gradient(135deg, #1b1b2f 0%, #2d2d44 50%, #3f3f59 100%);">
+              <span class="project-card-badge">Web漏洞靶场</span>
+            </div>
+            <div class="project-card-body">
+              <h3>DVWA Web 漏洞通关记录</h3>
+              <p>围绕 Brute Force、命令注入、文件上传、文件包含、CSRF、XSS 等模块，记录 Low/Medium/High 难度下的验证方法与防护差异。</p>
+              <ul class="project-card-list">
+                <li>Brute Force — token 绕过、防爆破机制分析</li>
+                <li>命令注入 — 管道符/分号拼接绕过过滤</li>
+                <li>文件上传 — Content-Type 伪造、后缀名绕过</li>
+                <li>XSS / CSRF — 防护层级差异对比</li>
+              </ul>
+              <div class="project-card-tags">
+                <span class="tag tag--sm">Burp Suite</span>
+                <span class="tag tag--sm">XSS</span>
+                <span class="tag tag--sm">CSRF</span>
+                <span class="tag tag--sm">文件上传</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 项目 7: Hadoop -->
+          <article class="project-card fade-up">
+            <div class="project-card-img" style="background: linear-gradient(135deg, #0c1929 0%, #1a3050 50%, #264a73 100%);">
+              <span class="project-card-badge">分布式计算</span>
+            </div>
+            <div class="project-card-body">
+              <h3>Docker 化 Hadoop 集群搭建与分布式计算</h3>
+              <p>基于容器云环境，设计并部署 6 节点 Docker 化 Hadoop 分布式计算集群。引入 ZooKeeper 实现 NameNode 与 YARN 高可用，通过 Shell 脚本自动化 SSH 免密配置。</p>
+              <ul class="project-card-list">
+                <li>6 节点集群：NameNode / ResourceManager + 从节点分离架构</li>
+                <li>蒙特卡洛算法 10⁸ 采样点 π 计算，误差 ≤ 10⁻⁴</li>
+                <li>跨容器通信优化 + JDK 兼容性排障</li>
+              </ul>
+              <div class="project-card-tags">
+                <span class="tag tag--sm">Docker</span>
+                <span class="tag tag--sm">Hadoop</span>
+                <span class="tag tag--sm">MapReduce</span>
+                <span class="tag tag--sm">ZooKeeper</span>
+                <span class="tag tag--sm">Shell</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 技能 ===== -->
+    <section class="section" id="skills">
+      <div class="section-inner">
+        <p class="section-eyebrow fade-up">Skills</p>
+        <h2 class="section-title fade-up">专业技能</h2>
+        <div class="skills-grid">
+          <!-- 技能 1 -->
+          <div class="skill-card fade-up">
+            <div class="skill-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <h3>安全服务</h3>
+            <div class="skill-bar">
+              <div class="skill-bar-fill" style="width: 85%;"></div>
+            </div>
+            <p>PTES 流程 · 等保定级备案 · 授权扫描 · 人工复核 · 整改建议输出 · 报告编写</p>
+          </div>
+
+          <!-- 技能 2 -->
+          <div class="skill-card fade-up">
+            <div class="skill-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0110 0v4"/>
+              </svg>
+            </div>
+            <h3>Web 安全</h3>
+            <div class="skill-bar">
+              <div class="skill-bar-fill" style="width: 80%;"></div>
+            </div>
+            <p>SQL注入 · XSS · CSRF · 文件包含 · 任意文件读取 · 文件上传 · 弱口令 · 漏洞验证与修复</p>
+          </div>
+
+          <!-- 技能 3 -->
+          <div class="skill-card fade-up">
+            <div class="skill-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+              </svg>
+            </div>
+            <h3>安全工具</h3>
+            <div class="skill-bar">
+              <div class="skill-bar-fill" style="width: 82%;"></div>
+            </div>
+            <p>Nmap · Burp Suite · sqlmap · AWVS · Nessus · Wfuzz · Hydra · John · Metasploit · dirb/gobuster · SearchSploit</p>
+          </div>
+
+          <!-- 技能 4 -->
+          <div class="skill-card fade-up">
+            <div class="skill-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                <line x1="8" y1="21" x2="16" y2="21"/>
+                <line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+            </div>
+            <h3>系统与网络</h3>
+            <div class="skill-bar">
+              <div class="skill-bar-fill" style="width: 78%;"></div>
+            </div>
+            <p>Linux 基础操作 · 权限管理 · 日志查看 · 服务排查 · 端口服务识别 · TCP/IP · 路由交换</p>
+          </div>
+
+          <!-- 技能 5 -->
+          <div class="skill-card fade-up">
+            <div class="skill-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+                <circle cx="6" cy="6" r="1" fill="currentColor"/>
+                <circle cx="6" cy="18" r="1" fill="currentColor"/>
+              </svg>
+            </div>
+            <h3>运维基础</h3>
+            <div class="skill-bar">
+              <div class="skill-bar-fill" style="width: 75%;"></div>
+            </div>
+            <p>Linux 系统管理（Debian/Ubuntu/CentOS）· 服务部署配置 · 日志分析与排障 · 进程/端口监控 · Bash/Python 运维脚本 · 定时任务管理</p>
+          </div>
+
+          <!-- 技能 6 -->
+          <div class="skill-card fade-up">
+            <div class="skill-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"/>
+                <polyline points="8 6 2 12 8 18"/>
+              </svg>
+            </div>
+            <h3>脚本开发</h3>
+            <div class="skill-bar">
+              <div class="skill-bar-fill" style="width: 75%;"></div>
+            </div>
+            <p>Python · Java · Bash · 安全工具开发 · OWASP 白盒审计 · 硬编码密钥/逻辑缺陷挖掘 · 端口信息提取 · 扫描结果整理</p>
+          </div>
+
+          <!-- 技能 7 -->
+          <div class="skill-card fade-up skill-card--highlight">
+            <div class="skill-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+            </div>
+            <h3>AI 工程化应用</h3>
+            <div class="skill-bar">
+              <div class="skill-bar-fill" style="width: 88%;"></div>
+            </div>
+            <p>Prompt Engineering · 结构化指令（角色扮演+场景约束+CoT）· AI Agent 编排 · MCP 协议 · AI 工具链集成 · 智能辅助决策与信息筛选</p>
+          </div>
+
+          <!-- 技能 8 -->
+          <div class="skill-card fade-up">
+            <div class="skill-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+              </svg>
+            </div>
+            <h3>工程基础</h3>
+            <div class="skill-bar">
+              <div class="skill-bar-fill" style="width: 72%;"></div>
+            </div>
+            <p>Git 基础命令 · 依赖安装 · 环境配置 · 版本兼容 · 项目文档执行</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 联系方式 ===== -->
+    <section class="section section--accent" id="contact">
+      <div class="section-inner">
+        <p class="section-eyebrow fade-up">Contact</p>
+        <h2 class="section-title fade-up">取得联系</h2>
+        <p class="section-desc fade-up">
+          无论是安全技术交流、项目合作还是职业机会<br />欢迎通过以下方式与我取得联系
+        </p>
+
+        <div class="contact-grid fade-up">
+          <!-- 邮箱 -->
+          <a class="contact-card" href="mailto:meiyuan@example.com">
+            <div class="contact-card-top">
+              <div class="contact-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="2"/>
+                  <path d="M22 4L12 13 2 4"/>
+                </svg>
+              </div>
+              <div class="contact-arrow" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
+                </svg>
+              </div>
+            </div>
+            <div class="contact-card-body">
+              <span class="contact-label">电子邮箱</span>
+              <span class="contact-value">1026689997@qq.com</span>
+              <span class="contact-hint">随时来信，48 小时内回复</span>
+            </div>
+          </a>
+
+          <!-- 微信 -->
+          <div class="contact-card">
+            <div class="contact-card-top">
+              <div class="contact-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+                </svg>
+              </div>
+            </div>
+            <div class="contact-card-body">
+              <span class="contact-label">微信</span>
+              <span class="contact-value">_13098my</span>
+              <span class="contact-hint">备注来意，快速通过</span>
+            </div>
+          </div>
+
+          <!-- GitHub -->
+          <a class="contact-card" href="#">
+            <div class="contact-card-top">
+              <div class="contact-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/>
+                </svg>
+              </div>
+              <div class="contact-arrow" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
+                </svg>
+              </div>
+            </div>
+            <div class="contact-card-body">
+              <span class="contact-label">GitHub</span>
+              <span class="contact-value">https://github.com/Abiogene</span>
+              <span class="contact-hint">开源项目与技术笔记</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 滚动动画脚本 -->
+  <script>
+    (function() {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        },
+        { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+      );
+
+      document.querySelectorAll('.fade-up').forEach((el) => {
+        observer.observe(el);
+      });
+    })();
+  </script>
+</body>
+</html>
